@@ -40,15 +40,8 @@ sub _read_document ($r_str) {
 }
 
 sub _read_name ($r_str) {
-    my $name = '';
-
-    while ( $$r_str =~ s{^(.)}{} ) {
-        my $chr = $1;
-        last if $chr eq chr(0);
-        $name .= $chr;
-    }
-
-    return $name;
+    return $1 if $$r_str =~ s{^([^\0]+)\0}{};
+    return;
 }
 
 sub _read_int ($r_str) {
