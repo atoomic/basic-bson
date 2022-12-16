@@ -1,5 +1,7 @@
 #!perl
 
+# cleanup and simplified
+
 use strict;
 use warnings;
 
