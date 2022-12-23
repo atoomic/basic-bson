@@ -1,5 +1,7 @@
 #!perl
 
+package bson;
+
 # cleanup and simplified
 
 use strict;
@@ -42,18 +44,23 @@ sub _read_document ($r_str) {
 }
 
 sub _read_name ($r_str) {
+    return unless ref $r_str;
     return $1 if $$r_str =~ s{^([^\0]+)\0}{};
     return;
 }
 
 sub _read_int ($r_str) {
+    return 0 unless ref $r_str;
+
     $$r_str =~ s{^(.{4})}{};
     return unpack( 'l', $1 );
 }
 
 sub _read_bool ($r_str) {
-    my ($b) = ( $r_str =~ s{^(.)}{} );
+    return 'false' unless ref $r_str;
+    my ($b) = ( $$r_str =~ s{^(.)}{} );
+    no warnings;
     return int($b) ? 'true' : 'false';
 }
 
-note explain decode("\x01\x66\x6F\x6F\x00\xD2\x04\x00\x00\x02\x62\x61\x72\x00\x01\x00");
+1;
